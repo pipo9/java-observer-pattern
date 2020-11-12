@@ -44,29 +44,34 @@ class BeingObserved extends Observable
 } 
 
 class ObserverDemo { 
+    static int x=0; 
 	public static void main(String args[]) 
 	{ 
-        int x; 
-        Scanner myObj = new Scanner(System.in);
 		BeingObserved beingObserved = new BeingObserved(); 
         Hexa hexa = new Hexa();
         Dicmal dicmal=new Dicmal();
         Binary binary=new Binary();
-     
+        Timer timer=new Timer();
+         
         //sub to be notified
 		beingObserved.subs(hexa); 
 		beingObserved.subs(dicmal); 
-		beingObserved.subs(binary); 
-        System.out.println("enter x value"); 
-         x = myObj.nextInt();  
-        beingObserved.notifyallsubs(x+1); 
+        beingObserved.subs(binary); 
+        timer.schedule(
+            new TimerTask(){ 
+                @Override
+            public void run() {
+                 x=(x+1)%60;
+                 beingObserved.notifyallsubs(x); 
+            }}
+        , 0
+        ,1000
+        );
         
-        //unsub to not be notified
-        beingObserved.unsubs(binary); 
-        System.out.println("enter x value"); 
-         x = myObj.nextInt();  
-        beingObserved.notifyallsubs(x+1); 
+
+        
 		
 		
 	} 
 } 
+
